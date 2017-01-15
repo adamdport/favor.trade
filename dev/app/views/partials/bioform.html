@@ -1,0 +1,24 @@
+  <div class="media">
+    <div class="media-left">
+      <img class="media-object" ng-src="{{user.picture}}">
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">
+        {{user.first_name}} {{user.last_name}}
+      </h4>
+      {{user.gender | limitTo: 1 | uppercase}}, {{user.birthday | ageFilter}}
+    </div>
+  </div>
+  <label>Your location (only you can see this): <small><a uib-tooltip="Nobody else can see this. In order for us to determine who your neighbors are, we need to know where you live. If you're not comfortable, a zip-code or nearby address is good enough.">Why do you need this?</a></small></label>
+  <latlong frm="forms.bio" search-field="user.location.formatted" lat="user.location.lat" lng="user.location.lng"></latlong>
+  <input type="hidden" required ng-model="user.location.lat">
+  <input type="hidden" required ng-model="user.location.lng">
+  <label>A short description of yourself:</label>
+  <div class="form-group" ng-class="{'has-error': forms.bio.about.$invalid && forms.bio.about.$touched}">
+    <textarea name="about" ng-model="user.bio" required class="form-control custom-control" rows="3" ng-maxlength="{{RESOURCES.max.bio}}" cycler cycle="placeholder" items="RESOURCES.aboutYourself"></textarea>
+    <h6 ng-class="{'text-danger' : RESOURCES.max.bio-forms.bio.about.$viewValue.length < 0}">{{RESOURCES.max.bio-forms.bio.about.$viewValue.length}} characters remaining.</h6>
+  </div>
+  <div class="form-group clearfix">
+    <uib-alert type="danger" ng-if="forms.bio.$submitted && (user.bio.length + 0 > RESOURCES.max.bio)">Be more concise!</uib-alert>
+    <uib-alert type="success" ng-if="success" close="success=false">Successfully updated profile.</uib-alert>
+  </div>

@@ -1,0 +1,18 @@
+{
+  "global": {
+    "parseVersion": "1.5.0"
+  },
+  "applications": {
+    "_default": {
+      "link": "dev.favor.trade"
+    },
+    "dev.favor.trade": {
+      "applicationId": "app_id",
+      "masterKey": "master_key"
+    },
+    "favor.trade": {
+      "applicationId": "app_id",
+      "masterKey": "master_key"
+    }
+  }
+}

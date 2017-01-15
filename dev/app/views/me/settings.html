@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Notifications</div>
+  <div class="panel-body">
+    <div>
+      You are <span ng-if="!user.emailWhenMessaged">not </span>currently receiving email notifications when another user messages you.
+    </div>
+    <button class="btn btn-lg" ng-click="emailWhenMessaged(!user.emailWhenMessaged)">
+      <span ng-if="!user.emailWhenMessaged">Start</span>
+      <span ng-if="user.emailWhenMessaged">Stop</span> sending message emails.
+    </button>
+    <hr/>
+    <div>
+      You are <span ng-if="!user.emailWhenReferenced">not </span>currently receiving email notifications when another user leaves a reference for you.
+    </div>
+    <button class="btn btn-lg" ng-click="emailWhenReferenced(!user.emailWhenReferenced)">
+      <span ng-if="!user.emailWhenReferenced">Start</span>
+      <span ng-if="user.emailWhenReferenced">Stop</span> sending reference emails.
+    </button>
+  </div>
+  <div class="panel-heading">Delete Account</div>
+  <div class="panel-body">
+    <div>If you don't want to be a part of the community anymore, you can destroy your account completely. <strong>This will permanently remove all favors, messages and references from the site forever. This is irreversible.</strong></div>
+    <button class="btn btn-lg btn-danger" ng-click="delete()" confirm="Are you sure you want to delete your account? All your favors, messages and references will disappear forever. This cannot be undone!">
+      <span class="glyphicon glyphicon-fire">
+      Delete my account permanently
+      <span class="glyphicon glyphicon-fire">
+    </button>
+  </div>
+</div>

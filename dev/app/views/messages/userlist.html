@@ -1,0 +1,13 @@
+<div class="col-sm-12" ng-class="{'hidden-xs': $state.current.name !== 'messages'}">
+  <a ui-sref='messages.withUser({userId: user.id})' ui-sref-active="active" class="list-group-item" ng-class="{'list-group-item-info': user.unread}" ng-repeat="user in users | filter:{id:'!'+me.id}">
+    <div class="media">
+      <div class="media-left">
+        <img class="media-object" ng-src="{{user.picture}}" alt="{{user.first_name}} {{user.last_name}}">
+      </div>
+      <div class="media-body">
+        <h5 class="media-heading">{{user.first_name}} {{user.last_name}}</h5>
+        {{user.gender | limitTo: 1 | uppercase}}<span ng-if="user.age">, {{user.age}}</span>
+      </div>
+    </div>
+  </a>
+</div>

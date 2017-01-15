@@ -1,0 +1,75 @@
+
+  <div class="row">
+    <div class="col-xs-12 text-center clearfix">
+      <h1>
+        <img ng-src="/images/logo.svg" width="100px"/>
+        Favor.trade
+        <small>Meet people, doing what you love</small>
+      </h1>
+    </div>
+  </div>
+  <hr/>
+  <div class="row">
+    <div class="col-sm-4 col-xs-12 text-center">
+      <h2>Offer what you do</h2>
+    </div>
+    <div class="col-sm-8 col-xs-12">
+      <div class="form-group">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-plus"> </span></span>
+          <input type="text" class="form-control" cycler items="RESOURCES.do" disabled/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <h2>
+        <span class="glyphicon glyphicon-search"> </span>
+        Find what you need
+      </h2>
+    </div>
+  </div>
+  <hr/>
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      <h2>Leave References</h2>
+      <h1>
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+      </h1>
+    </div>
+  </div>
+  <hr/>
+  <div class="row">
+    <div class="col-xs-12">
+      <h4>Putting the commune back into community</h4>
+      <ul>
+        <li>You want to meet people but don't know how</li>
+        <li>You love to help, but got stuck in a routine</li>
+        <li>You need a hand but not from a professional</li>
+        <li>You like doing stuff that other people hate or just can't do</li>
+      </ul>
+      <p>
+        Post things that you do so that your community can find you. Find the help that you need and meet someone new. Give freely just because you can.
+      </p>
+    </div>
+  </div>
+  <hr/>
+  <div class="row jumbotron">
+    <div class="col-sm-6 text-center vertical-center">
+      <h1>Sign in to start using Favor.trade</h1>
+    </div><!-- ...
+    --><div class="col-sm-6 vertical-center text-center" ng-if="!signedUp">
+      <button class="btn btn-lg btn-social btn-facebook" login>
+        <i class="fa fa-facebook"></i>
+        Sign in with Facebook
+      </button>
+      <label class="text-muted">We will never, ever spam you or sell your information. Promise.</label>
+      <h3>OR</h3>
+      <div>
+        <button class="btn btn-lg btn-default" ui-sref="home">Check it out first</button>
+      </div>
+    </div>
+  </div>

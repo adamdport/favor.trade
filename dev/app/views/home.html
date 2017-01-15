@@ -1,0 +1,79 @@
+<h3>
+  <form class="form-inline clearfix">
+    <select ng-if="user" ng-model="searchParams.mode" ng-change="search()" ng-options="mo as mo for mo in searchOptions.mode"></select>
+    <span ng-if="!user">Favors </span>
+    within
+    <select ng-model="searchParams.distance" ng-change="search()" ng-options="do as do for do in searchOptions.distance"></select>
+    <select ng-model="searchParams.distanceUnit" ng-change="search()" ng-options="duo as duo for duo in searchOptions.distanceUnits"></select>
+    of <span ng-if="user">you:</span>
+    <latlong ng-if="!user" lat="location.lat" lng="location.lng" onchange="location.search"></latlong>
+    <div class="input-group pull-right" ng-if="user && searchParams.mode == searchOptions.mode[0]">
+      <span class="input-group-addon"><span class="glyphicon glyphicon-search"> </span></span>
+      <input type="text" class="form-control" placeholder="Search for..." ng-model='searchParams.search' ng-change='search()' ng-model-options='{debounce:500}'/>
+    </div>
+  </form>
+</h3>
+<div infinite-scroll="more()" infinite-scroll-disabled="loading || allShown" infinite-scroll-distance="1">
+  <div ng-if="searchParams.mode == searchOptions.mode[0]">
+    <uib-accordion>
+      <uib-accordion-group ng-repeat="favor in favors" is-open="favor.accordionIsOpen">
+        <uib-accordion-heading>
+          <div class="row">
+            <span class="col-xs-11">{{favor.title}}</span>
+            <span class="col-xs-1" ng-if="user">
+              <span class="pull-right" flag favorid="favor.id"></span>
+            </span>
+          </div>
+        </uib-accordion-heading>
+        <uib-alert type="warning" ng-if="favor.messageError" close="favor.messageError = false">There was an error sending the message.</uib-alert>
+        <uib-alert type="success" ng-if="favor.messaged">You've successfully sent {{favor.user.first_name}} a message.</uib-alert>
+        <div ng-if="!user && favor.accordionIsOpen">
+          <button class="btn btn-social btn-facebook" login>
+            <i class="fa fa-facebook"></i>
+            Sign in with Facebook
+          </button> to request this favor!
+        </div>
+        <div class="media" ng-if="user && favor.accordionIsOpen && !favor.messaged">
+          <div class="media-left text-center">
+            <img class="media-object" ng-src="{{favor.user.picture}}" alt="{{favor.user.first_name}} {{favor.user.last_name}}">
+            <span>{{favor.user.gender | limitTo: 1 | uppercase}}<span ng-if="favor.user.age">, {{favor.user.age}}</span></span>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">Send a message to <a href ui-sref="people.withUser({userId: favor.user.id})">{{favor.user.first_name}} {{favor.user.last_name}}</a></h4>
+            <blockquote>"<em>{{favor.user.bio}}</em>"</blockquote>
+            <form name="forms[favor.obj.id]" ng-submit="sendMessage(favor)" novalidate>
+              <div class="form-group" ng-class="{'has-error': forms[favor.obj.id].$invalid && forms[favor.obj.id].$touched}">
+                <textarea required ng-model="favor.message" name="favor.obj.id" class="form-control" rows="3" cycler cycle="placeholder" items="RESOURCES.requestMessage" ng-maxlength="RESOURCES.max.message" maxlength="{{RESOURCES.max.message}}"></textarea>
+                <h6>{{RESOURCES.max.message - favor.message.length}} characters remaining</h6>
+              </div>
+              <button class="btn btn-primary clearfix">Send</button>
+            </form>
+          </div>
+        </div>
+      </uib-accordion-group>
+    </uib-accordion>
+  </div>
+  <div ng-if="searchParams.mode == searchOptions.mode[1]">
+    <a class="media" ng-repeat="user in users | orderBy:'-date'" ui-sref="people.withUser({userId: user.id})">
+      <div class="media-left">
+        <img class="media-object" ng-src="{{user.picture}}">
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">
+          {{user.first_name}} {{user.last_name}}, {{user.gender | limitTo: 1 | uppercase}}<span ng-if="user.age">, {{user.age}}</span>
+        </h4>
+        {{user.bio}}
+      </div>
+    </a>
+  </div>
+</div>
+<div class="text-center" ng-show="!(favors.length || users.length || loading) || allShown">
+  <h3 ng-if="user || location.lat" class="text-muted">
+    There are no <span ng-if="favors.length || users.length">more </span><span ng-if="searchParams.mode == searchOptions.mode[1]">users</span><span ng-if="searchParams.mode == searchOptions.mode[0]">favors</span> within this search radius<span ng-if="searchParams.search"> that match "<em>{{searchParams.search}}</em>"</span>. Help grow the community near you and invite your friends!
+  </h3>
+  <div ng-show="user || location.lat" class="fb-share-button" data-href="http://www.favor.trade" data-layout="button"></div>
+  <h3 ng-if="!user && !location.lat" class="text-info">Enter your location <span class="glyphicon glyphicon-arrow-up"></span>
+</div>
+<div class="text-center" ng-if="loading">
+  <i class="fa fa-spin fa-spinner fa-3x"></i>
+</div>

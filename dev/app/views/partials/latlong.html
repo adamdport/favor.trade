@@ -1,0 +1,7 @@
+<div class='input-group input-group-lg' ng-class='{"has-error": !lat && frm.location.$touched}'>
+  <span class='input-group-addon hidden-xs'>
+    <span class='glyphicon glyphicon-globe'> </span>
+  </span>
+  <input type='text' name='location' class='form-control' required ng-model='searchField' ng-change='search()' ng-model-options='{debounce:500}' placeholder='eg. 90210'/>
+  <span class='input-group-addon' ng-show='formatted'>{{formatted || 'No results found.'}}</span>
+</div>

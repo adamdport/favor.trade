@@ -1,0 +1,30 @@
+<div class="col-xs-12">
+  <h2><a href ui-sref="people.withUser({userId: them.id})">{{them.first_name}} {{them.last_name}}</a></h2>
+  <form name="forms.sendMessageForm" ng-submit="sendMessage()" novalidate>
+    <strong ng-if="messageInput.subject">{{messageInput.subject}}</strong>
+    <div class="form-group" ng-class="{'has-error': sendMessageForm.msg.$invalid && sendMessageForm.$submitted}">
+      <textarea name="msg" ng-required="true" placeholder="Send {{them.first_name}} a message..." ng-model="messageInput.model" class="form-control" ng-init="messageInput.rows=1" ng-focus="messageInput.rows=3" rows="{{messageInput.rows}}" ng-maxlength="RESOURCES.max.message" maxlength="{{RESOURCES.max.message}}"></textarea>
+      <h6>{{RESOURCES.max.message - messageInput.model.length}} characters remaining</h6>
+    </div>
+    <button class="btn btn-primary clearfix">Send</button>
+  </form>
+  <hr/>
+  <div class="media" ng-repeat="message in messages | orderBy:'-date'">
+    <div class="media-left">
+      <img class="media-object" ng-src="{{message.sender.picture}}">
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">
+        {{message.subject}}
+        <small class="pull-right">
+          <span class="glyphicon glyphicon-time"></span>
+          <em am-time-ago="message.date"></em>
+        </small>
+      </h4>
+      {{message.body}}
+    </div>
+  </div>
+  <div class="row" ng-if="!messages.length">
+    <h3 class="text-center"><span class="glyphicon glyphicon-envelope"> </span> You don't have any messages with {{them.first_name}}.</h3>
+  </div>
+</div>

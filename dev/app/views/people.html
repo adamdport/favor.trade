@@ -1,0 +1,67 @@
+  <h1>
+  {{user.first_name}} {{user.last_name}}
+  <small>{{user.gender | limitTo: 1 | uppercase}}<span ng-if="user.age">, {{user.age}}</span></small>
+  </h1>
+  Member since {{user.joined | date : 'MMMM yyyy' : 'UTC'}}
+  <img class="img-responsive" ng-src="{{user.picture}}"/>
+  <p>{{user.bio}}</p>
+  <a href class="btn btn-default" ui-sref="me.profile" ng-show="me">Edit your profile</a>
+  <a href class="btn btn-default" ui-sref="messages.withUser({userId: user.id})" ng-if="!me">Send {{user.first_name}} a message</a>
+  <hr/>
+  <uib-tabset>
+    <uib-tab heading="References">
+      <button class="btn btn-default" ng-click="display.referenceForm = true" ng-if="display.referenceFormButton && !display.referenceForm">Leave a reference for {{user.first_name}}</button>
+      <form name="forms.saveReference" ng-submit="forms.saveReference.$valid && saveReference()" novalidate ng-if="display.referenceForm">
+        <div class="form-group">
+          <label>How do I know {{user.first_name}}?</label>
+          <select required name="type" ng-model="newReference.type" ng-options="type.val as type.pretty for type in typeOptions"></select>
+          <span class="glyphicon glyphicon-exclamation-sign text-danger" ng-show="forms.saveReference.$submitted && newReference.type == undefined"></span>
+        </div>
+        <div class="form-group">
+          <label>My experience with {{user.first_name}} was</label>
+          <select required name="rating" ng-model="newReference.rating" ng-options="rating.val as rating.pretty for rating in ratingOptions"></select>
+          <span class="glyphicon glyphicon-exclamation-sign text-danger" ng-show="forms.saveReference.$submitted && newReference.rating == undefined"></span>
+        </div>
+        <div>
+          <label>Description</label>
+          <div class="form-group" ng-class="{'has-error': forms.saveReference.text.$invalid && forms.saveReference.$submitted}">
+            <textarea name="text" required ng-model="newReference.text" class="form-control" ng-init="messageInput.rows=1" ng-focus="messageInput.rows=3" rows="{{messageInput.rows}}" ng-maxlength="RESOURCES.max.reference" maxlength="{{RESOURCES.max.reference}}" ng-minlength="RESOURCES.min.reference" minlength="{{RESOURCES.min.reference}}"></textarea>
+            <h6>{{RESOURCES.max.reference - newReference.text.length}} characters remaining</h6>
+          </div>
+        </div>
+        <button class="btn btn-primary clearfix">Save Reference</button>
+        <uib-alert type="danger" ng-show="referenceError" close="referenceError = false">Something went wrong. Try again.</uib-alert>
+        <uib-alert type="danger" ng-show="forms.saveReference.$submitted && forms.saveReference.type.$pristine">Choose how you know {{user.first_name}}.</uib-alert>
+        <uib-alert type="danger" ng-show="forms.saveReference.$submitted && forms.saveReference.rating.$pristine">Choose a rating.</uib-alert>
+        <uib-alert type="danger" ng-show="forms.saveReference.$submitted && forms.saveReference.text.$invalid">Make sure you've written between {{RESOURCES.min.reference}} and {{RESOURCES.max.reference}} characters and try again. </uib-alert>
+      </form>
+      <div class="media" ng-repeat="reference in references | orderBy:'-date'">
+        <div class="media-left">
+          <img class="media-object" ng-src="{{reference.writtenBy.picture}}">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">
+            <div><a href ui-sref="people.withUser({userId: reference.writtenBy.id})">{{reference.writtenBy.first_name}} {{reference.writtenBy.last_name}}</a></div>
+            <span ng-switch="reference.rating" ng-init="reference.how = _.find(typeOptions, {val: reference.type}).pretty">
+              <span ng-switch-when="-1" class="text-danger">Negative - {{reference.how}}</span>
+              <span ng-switch-when="0" class="text-warning">Neutral - {{reference.how}}</span>
+              <span ng-switch-when="1" class="text-success">Positive - {{reference.how}}</span>
+            </span>
+            <small class="pull-right">
+              <span class="glyphicon glyphicon-time"></span>
+              <em am-time-ago="reference.date"></em>
+            </small>
+          </h4>
+          {{reference.text}}
+        </div>
+      </div>
+      <h3 ng-if="!references.length" class="text-muted"><em>{{user.first_name}} doesn't have any references yet.</em></h3>
+    </uib-tab>
+    <uib-tab heading="Favors">
+      <ul>
+        <li ng-repeat="favor in favors">
+          <a href ui-sref="messages.withUser({userId: user.id, subject: favor.title})">{{favor.title}}</a>
+        </li>
+      </ul>
+    </uib-tab>
+  </uib-tabset>

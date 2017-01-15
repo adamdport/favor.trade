@@ -1,0 +1,35 @@
+<h1><small>Step {{step}} of 2</small></h1>
+  <div ng-show="step == 1">
+    <h1>Create 3 favors <small>that you can do for your neighbor</small></h1>
+    <uib-accordion>
+      <div ng-include="'views/partials/whatAreFavors.html'" include-replace></div>
+    </uib-accordion>
+    <form name="forms.favors" novalidate ng-submit="step2()">
+      <div class="form-group" ng-repeat="model in favors" ng-class="{'has-error': forms.favors[{{$index}}].$invalid && forms.favors[{{$index}}].$touched}">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-heart"> </span></span>
+          <input type="text" class="form-control" required cycler cycle="placeholder" items="RESOURCES.do" ng-model="model.title" maxlength="{{RESOURCES.max.favor}}" ng-maxlength="RESOURCES.max.favor" minlength="{{RESOURCES.min.favor}}" ng-minlength="RESOURCES.min.favor"/>
+        </div>
+      </div>
+      <div class="alert alert-danger" ng-show="forms.favors.$submitted && forms.favors.$invalid" role="alert">Fill in all {{favors.length}} favors and we'll let you in. They must be between 3 and 200 characters.</div>
+      <button class="btn btn-lg btn-primary" type="submit">
+        Next
+      </button>
+    </form>
+  </div>
+  <div ng-show="step == 2">
+    <h1>Say something <small>about yourself</small></h1>
+    <form name="forms.bio" ng-submit="submit()" novalidate>
+      <ng-include src="'views/partials/bioform.html'"></ng-include>
+      <div>
+        <em>By joining Favor.Trade, you agree to our <a href ng-click="terms()">terms and conditions</a></em>
+      </div>
+      <button class="btn btn-lg text-right" type="button" ng-click="step = 1">
+        Back
+      </button>
+      <button class="btn btn-lg btn-primary" type="submit">
+        Let me in!
+      </button>
+    </form>
+  </div>
+</form>
